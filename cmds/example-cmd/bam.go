@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bam-file-replacer/common/confighelper"
+	"github.com/niski84/bam-file-replacer/common/confighelper"
 
 	"os"
 	"flag"
