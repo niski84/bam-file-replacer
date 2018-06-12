@@ -1,12 +1,8 @@
 package main
 
 import (
-	// "deployment/cl/common/loghelper"
-	// "deployment/cl/sdk/database"
-	// "deployment/cl/common/clihelper"
-
 	"templates/common/confighelper"
-	// "templates/common/dbhelper"
+
 	"os"
 	"flag"
 	"log"
@@ -18,10 +14,7 @@ import (
 // Process command line flags (arguments)
 func processFlags() (jsonFile string) {
 	
-	
-	
 	flag.StringVar(&jsonFile, "-c", `./bam.json`, "path to config file")
-	
 	flag.Parse()
 
 	return 
@@ -29,18 +22,11 @@ func processFlags() (jsonFile string) {
 
 func main() {
 	
-	log.Println("BAM!")
-	
-	// log.Print* to screen and file
-	// loghelper.SetLogging("example.log")
+	log.Println("BAM! - file replacer!\n\n")
 	
 	// get json config file
 	jsonFile := processFlags()
 	
-	// if packageRoot == "" {
-	// 	packageRoot, _ = clihelper.PromptUser("-p not supplied.\nEnter the package root dir ",`C:\\cl\\CreditLens5.18.22`)
-	// }
-
 	// set the config file path
 	confighelper.SetConfigFilePath(jsonFile)
 	log.Println("\nExecuting using Config:" + jsonFile)
@@ -74,12 +60,6 @@ func main() {
 	
 	log.Println(cfg["destination"],templateText)
 
-	
-	// if err := database.UpgradeMoodysDb(dbMoodyscfg,packageRoot); err != nil {
-	// 	log.Printf("\n\nError in main(): %v", err)
-	// }
-
-	// log.Println("Logfile: " + filepath.Join(packageRoot, "moodys-output.log"))
 	log.Println("Processing complete")
 
 }
@@ -98,18 +78,15 @@ return
 
 
 // FindFiles searches for files matching the pattern recursively
-// Skips directory when file is found
 func FindFiles(dir string, pattern string) ([]string, error) {
-	// "moduleid"="path-to-sql"
+	
 	fl := []string{}
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Printf("error accessing path %q:%v\n", dir, err)
 			return err
 		}
-		// Get list of files in path
-		
-		
+			// Get list of files in path
 			filelist, err := filepath.Glob(filepath.Join(path, pattern))
 			if err != nil {
 				fmt.Printf("Error in search pattern %v\n", err)
