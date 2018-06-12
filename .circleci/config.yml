@@ -25,6 +25,6 @@ jobs:
       - run: go get -v -t -d ./...
       - run: go test -v ./...
       - run: go get github.com/mitchellh/gox
-      - run: go get github.com/tcnksm/ghr
-      - run: gox -ldflags "-X main.Version $BUILD_VERSION -X main.BuildDate $BUILD_DATE" -output "dist/ncd_{{.OS}}_{{.Arch}}"
+      - run: go get github.com/tcnksm/ghr  
+      - run: gox -ldflags "-X main.Version $BUILD_VERSION -X main.BuildDate 1.0.1" -output "dist/ncd_{{.OS}}_{{.Arch}}" -os="linux windows
       - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` dist/
