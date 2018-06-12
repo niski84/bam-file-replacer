@@ -1,7 +1,7 @@
 package main
 
 import (
-	"common/confighelper"
+	"../../bam-file-replacer/common/confighelper"
 
 	"os"
 	"flag"
