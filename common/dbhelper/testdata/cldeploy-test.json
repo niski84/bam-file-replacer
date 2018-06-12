@@ -1,0 +1,38 @@
+{
+ "Tenant": {
+   "Id": "bank1",
+   "LicensedModules": "*"
+ },
+ "Application": {
+   "CfOrgId": "bank1",
+   "CfSpaceId": "qa",
+   "SiteUrl": "http://bank1.creditlens.com"
+ },
+ "MoodysDB": {
+   "HostName": "localhost",
+   "Port": "5432",
+   "Username": "moodys",
+   "Password": "a",
+   "Database": "moodys"
+ },
+ "TenantDB": {
+   "HostName": "localhost",
+   "Port": "5432",
+   "Username": "tenant",
+   "Password": "a",
+   "Database": "tenant"
+ },
+ "OlapDB": {
+   "HostName": "localhost",
+   "Port": "5432",
+   "Username": "ro",
+   "Password": "a",
+   "Database": "rotestdb"
+ },
+ "ObjectStore": {
+
+ },
+ "Qlik": {
+
+ }
+}

@@ -1,0 +1,7 @@
+{
+  "Template": {
+    "template-file": "bam.txt",
+    "destination": "C:\\Users\\SkitchN\\Documents\\goprojects\\src\\templates\\testing",
+    "glob": "*.mkts2"
+  }
+}
