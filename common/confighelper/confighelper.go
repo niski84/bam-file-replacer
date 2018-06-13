@@ -6,7 +6,6 @@ import (
 	"log"
 	"io/ioutil"
 	"errors"
-	"reflect"
 )
 
 // ConfigFile path to json config file
