@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"io/ioutil"
+	"strings"
 )
 
 // Process command line flags (arguments)
@@ -33,34 +34,58 @@ func main() {
 	
 	
 	// read config
-	cfg, err := confighelper.GetConfigNode("Template")
+	cfg, err := confighelper.GetConfigNode("bam-config")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	
-	log.Println(cfg["glob"].(string))
+	
+	log.Println("Searching recursively from: ", cfg["source"].(string))
 
-	files, _:= FindFiles(cfg["destination"].(string), cfg["glob"].(string))
+	files, _:= FindFiles(cfg["source"].(string), "*")
 	if err != nil {
 		log.Fatal(err)
 	} 
 
-	templateText,_ := getTemplate(cfg["template-file"].(string))
-	
-	log.Println("using text: \n ",templateText)
-
-	for i,filef := range(files){
-		log.Println(i, " replacing text in file: ", filef)
-		// write errors to file:
-	    ioutil.WriteFile(filef, []byte(templateText),os.FileMode(0644))
-
+	if len(files) < 1 {
+		log.Fatal("No files found under: ", cfg["source"].(string))	
 	}
 
-	
-	log.Println(cfg["destination"],templateText)
+	log.Println("reading the keyfile file:",cfg["keyfile"].(string))
+	templateText,err := getTemplate(cfg["keyfile"].(string))
+	if err != nil {
+		log.Fatal("oopsie.. keyfile not found in current directory", cfg["keyfile"].(string) )
+	}
 
-	log.Println("Processing complete")
+	log.Println("using text: \n ",templateText)
+
+	// create destination folder if it doesn't exist
+	if _, err := os.Stat(cfg["destination"].(string)); os.IsNotExist(err) {
+		os.MkdirAll(cfg["destination"].(string), os.ModePerm)
+	}
+
+	// iterate over found files and replace source with destination dir
+	for _,filef := range(files){
+		log.Println("found: ", filef)
+		fileDest := strings.Replace(filef, cfg["source"].(string), cfg["destination"].(string),1)
+		
+		// create destination folder if it doesn't exist
+		if _, err := os.Stat(filepath.Dir(fileDest)); os.IsNotExist(err) {
+			log.Println("creating dir:",filepath.Dir(fileDest))
+			err = os.MkdirAll(filepath.Dir(fileDest), os.ModePerm)
+			if err != nil {
+				log.Fatal("error creating dir:",filepath.Dir(fileDest),err)
+			}
+		}
+		
+		log.Println("creating file:",fileDest)
+
+		// write out the new file with the contents from the keyfile
+	    ioutil.WriteFile(fileDest, []byte(templateText),os.FileMode(0644))
+	}
+
+	log.Println("bam-o! Processing complete")
 
 }
 
@@ -93,8 +118,11 @@ func FindFiles(dir string, pattern string) ([]string, error) {
 				return err
 			}
 			
-			fl = append(fl, filelist...)
-				
+			// add file as long as it isn't a dir
+			for _,file := range filelist {
+				if info, err := os.Stat(file); err != nil || !info.IsDir() {
+					fl = append(fl, file)	
+			}}
 		return nil
 	})
 	return fl, err

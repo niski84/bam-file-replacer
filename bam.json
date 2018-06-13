@@ -1,7 +1,7 @@
 {
-  "Template": {
-    "template-file": "bam.txt",
-    "destination": "C:\\Users\\SkitchN\\Documents\\goprojects\\src\\templates\\testing",
-    "glob": "*.mkts2"
+  "bam-config": {
+    "source": "C:\\Users\\SkitchN\\Documents\\goprojects\\src\\bam-file-replacer\\testdata\\testing",
+    "destination": "C:\\Users\\SkitchN\\Documents\\goprojects\\src\\bam-file-replacer\\testdata\\testing_output",
+    "keyfile": "blank.m2ts"
   }
 }
